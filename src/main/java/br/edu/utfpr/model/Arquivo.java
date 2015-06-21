@@ -53,6 +53,12 @@ public class Arquivo implements Serializable{
     public void setPasta(Pasta pasta) {
         this.pasta = pasta;
     }
+    
+    public void valida() {
+        if(nomeArquivo == null){
+            throw new IllegalArgumentException("Nome do Arquivo não pode ser nulo");
+        }
+    }
 
     @Override
     public String toString() {

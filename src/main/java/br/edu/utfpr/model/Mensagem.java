@@ -41,6 +41,12 @@ public class Mensagem implements Serializable{
     public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
+    
+    public void valida() {
+        if(descricao == null){
+            throw new IllegalArgumentException("Mensagem não pode ser nulo");
+        }
+    }
 
     @Override
     public String toString() {

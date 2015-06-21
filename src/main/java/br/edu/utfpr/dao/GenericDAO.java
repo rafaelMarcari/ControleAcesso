@@ -5,47 +5,48 @@
  */
 package br.edu.utfpr.dao;
 
-import java.io.Serializable;
+import br.edu.utfpr.singleton.ConnectionDB;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.CriteriaQuery;
 
 /**
  *
  * @author Rafael
+ * @param <PK>
  * @param <T>
  */
-public abstract class GenericDAO<T> implements Serializable {
-    
-    private EMF emf;
-    private final EntityManager em;
-    
-    private Class<T> entityClass;
 
+public class GenericDAO<PK, T> extends ConnectionDB {
+    private EntityManager em;
+ 
     public GenericDAO(EntityManager em) {
         this.em = em;
     }
-    
+ 
+    public T getById(PK pk) {
+        return (T) em.find(getTypeClass(), pk);
+    }
+ 
     public void save(T entity) {
         em.persist(entity);
     }
-    
+ 
+    public void update(T entity) {
+        em.merge(entity);
+    }
+ 
     public void delete(T entity) {
         em.remove(entity);
     }
-    
-    public T update(T entity) {
-        return em.merge(entity);
-    }
-    
-    public T findById(Long id) {
-        return em.find(entityClass, id);
-    }
-    
+ 
     public List<T> findAll() {
-        CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
-        cq.select(cq.from(entityClass));
-        return em.createQuery(cq).getResultList();
+        return em.createQuery(("FROM " + getTypeClass().getName())).getResultList();
     }
-    
+ 
+    private Class<?> getTypeClass() {
+        Class<?> clazz = (Class<?>) ((ParameterizedType) this.getClass()
+                .getGenericSuperclass()).getActualTypeArguments()[1];
+        return clazz;
+    }
 }

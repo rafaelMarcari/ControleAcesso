@@ -46,6 +46,5 @@ public class Proxy implements IPasta{
             System.out.println("Você não possui permissão para acessar este diretório");
             return msg;
         }
-    }
-    
+    }   
 }

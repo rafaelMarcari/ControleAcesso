@@ -66,6 +66,12 @@ public class Pasta implements IPasta, Serializable{
     public void setArquivos(List<Arquivo> arquivos) {
         this.arquivos = arquivos;
     }
+    
+    public void valida() {
+        if(nome == null || path == null){
+            throw new IllegalArgumentException("Nome ou caminho da pasta não podem ser nulo");
+        }
+    }
 
     @Override
     public String toString() {

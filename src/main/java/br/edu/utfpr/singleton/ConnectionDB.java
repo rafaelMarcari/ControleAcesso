@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.edu.utfpr.dao;
+package br.edu.utfpr.singleton;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,24 +14,16 @@ import javax.persistence.Persistence;
  * @author Rafael
  * 
  */
-public class EMF {
-    
-    private static EMF instance = null;
-    private static EntityManagerFactory factory = null;
-    
-    private EMF() {}
+public class ConnectionDB {
+    private static EntityManagerFactory emf;
+    private static EntityManager em;
 
-    public static EMF getInstance() {
-        if(instance==null) {
-            instance = new EMF();
-        }
-        return instance;
-    }
-    
-    public EntityManager createEntityManager(){
-        if(factory==null) {
-            factory = Persistence.createEntityManagerFactory("default");
-        }
-        return factory.createEntityManager();
+    public EntityManager getConnection(){
+        if (em == null){
+                emf  = Persistence.createEntityManagerFactory("connBanco");
+                em  = emf.createEntityManager();
+        }	
+
+        return em;	
     }
 }

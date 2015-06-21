@@ -97,6 +97,12 @@ public class Usuario {
     public void setState(State state) {
         this.state = state;
     }
+    
+    public void valida() {
+        if(nome == null || usuario == null || senha == null){
+            throw new IllegalArgumentException("Nome, usuário ou senha não podem ser nulo");
+        }
+    }
 
     @Override
     public String toString() {
